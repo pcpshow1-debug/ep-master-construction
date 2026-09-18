@@ -81,7 +81,7 @@ export function Reviews() {
       <div className="relative z-10 flex h-full flex-col px-4 pane-pad sm:px-6 md:px-10 lg:px-12 xl:px-16">
         <div className="flex shrink-0 items-end justify-between gap-6">
           <h2 className="font-display text-section font-medium leading-[1.05] tracking-display">
-            Our customers say
+            What our customers say
           </h2>
           <a
             href={site.mapsUrl}

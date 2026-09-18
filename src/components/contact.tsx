@@ -1,23 +1,96 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, type FormEvent } from "react";
 import { ArrowRight } from "lucide-react";
 import { site } from "@/data/site";
 
 const PROJECTS = ["Deck", "Patio cover", "Framing", "Not sure yet"] as const;
 
+type Fields = {
+  name: string;
+  email: string;
+  phone: string;
+  city: string;
+  project: string;
+  notes: string;
+};
+
+function quoteBody(data: Fields) {
+  return [
+    `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Phone: ${data.phone || "—"}`,
+    `City: ${data.city || "—"}`,
+    `Project: ${data.project || "—"}`,
+    "",
+    data.notes || "(no notes)",
+  ].join("\n");
+}
+
+function mailtoHref(data: Fields) {
+  const subject = `Quote request — ${data.name} — ${data.project || "project"}`;
+  return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(quoteBody(data))}`;
+}
+
+async function postFormSubmit(data: Fields) {
+  const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      _subject: `Quote request — ${data.name} — ${data.project || "project"}`,
+      _template: "table",
+      _captcha: "false",
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      city: data.city,
+      project: data.project,
+      notes: data.notes,
+      message: quoteBody(data),
+    }),
+  });
+  const json = (await res.json().catch(() => ({}))) as { success?: boolean | string; message?: string };
+  const ok = res.ok && json.success !== false && json.success !== "false";
+  if (!ok) throw new Error(json.message || `FormSubmit ${res.status}`);
+}
+
 export function Contact() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [nextUrl, setNextUrl] = useState("https://epmasterconstruction.com/?sent=1#contact");
+  const [error, setError] = useState("");
+  const [mailHref, setMailHref] = useState("");
 
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    if (url.searchParams.get("sent") === "1") setSent(true);
-    url.searchParams.set("sent", "1");
-    url.hash = "contact";
-    setNextUrl(url.toString());
-  }, []);
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const raw = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    const data: Fields = {
+      name: raw.name?.trim() || "",
+      email: raw.email?.trim() || "",
+      phone: raw.phone?.trim() || "",
+      city: raw.city?.trim() || "",
+      project: raw.project || "Deck",
+      notes: raw.notes?.trim() || "",
+    };
+    setSending(true);
+    setError("");
+    setMailHref(mailtoHref(data));
+    try {
+      await postFormSubmit(data);
+      setSent(true);
+    } catch (err) {
+      const href = mailtoHref(data);
+      setMailHref(href);
+      try {
+        window.location.href = href;
+        setSent(true);
+      } catch {
+        setError(err instanceof Error ? err.message : "Couldn’t send. Email or call Eli.");
+      }
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <section id="contact" className="relative bg-ink text-bone">
@@ -28,22 +101,18 @@ export function Contact() {
             Get a quote.
           </h2>
           {sent ? (
-            <p className="mt-10 font-display text-2xl font-medium tracking-display">
-              Received. We’ll come back with a number, not a brochure.
-            </p>
+            <div className="mt-10 space-y-4">
+              <p className="font-display text-2xl font-medium tracking-display">
+                Received. We’ll come back with a number, not a brochure.
+              </p>
+              {mailHref ? (
+                <a href={mailHref} className="text-sm text-mist underline decoration-bone/25 underline-offset-4">
+                  If Mail didn’t open, tap here to send it.
+                </a>
+              ) : null}
+            </div>
           ) : (
-            <form
-              action={`https://formsubmit.co/${site.email}`}
-              method="POST"
-              className="mt-10 space-y-1"
-              onSubmit={() => setSending(true)}
-            >
-              <input type="hidden" name="_subject" value="New quote — EP Master Construction" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_next" value={nextUrl} />
-              <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
-
+            <form onSubmit={onSubmit} className="mt-10 space-y-1">
               <input required name="name" className="field" placeholder="Name" autoComplete="name" />
               <input
                 required
@@ -71,6 +140,20 @@ export function Contact() {
                 className="field resize-none"
                 placeholder="What are we building?"
               />
+              {error ? (
+                <p className="pt-4 text-sm text-mist">
+                  {error}{" "}
+                  {mailHref ? (
+                    <a href={mailHref} className="underline decoration-bone/30 underline-offset-4">
+                      Send from Mail
+                    </a>
+                  ) : (
+                    <a href={`mailto:${site.email}`} className="underline decoration-bone/30 underline-offset-4">
+                      Email Eli
+                    </a>
+                  )}
+                </p>
+              ) : null}
               <button type="submit" className="quote-btn mt-8" disabled={sending}>
                 {sending ? "Sending…" : "Send"}
                 <ArrowRight className="size-4" strokeWidth={2} />

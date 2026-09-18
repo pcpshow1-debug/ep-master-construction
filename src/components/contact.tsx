@@ -32,26 +32,21 @@ function mailtoHref(data: Fields) {
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(quoteBody(data))}`;
 }
 
-async function postFormSubmit(data: Fields) {
-  const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`, {
+async function postQuote(data: Fields) {
+  const res = await fetch("/api/quote", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      _subject: `Quote request — ${data.name} — ${data.project || "project"}`,
-      _template: "table",
-      _captcha: "false",
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      city: data.city,
-      project: data.project,
-      notes: data.notes,
-      message: quoteBody(data),
-    }),
+    body: JSON.stringify(data),
   });
-  const json = (await res.json().catch(() => ({}))) as { success?: boolean | string; message?: string };
-  const ok = res.ok && json.success !== false && json.success !== "false";
-  if (!ok) throw new Error(json.message || `FormSubmit ${res.status}`);
+  const json = (await res.json().catch(() => ({}))) as {
+    ok?: boolean;
+    id?: string | null;
+    error?: string;
+  };
+  if (!res.ok || !json.ok) {
+    throw new Error(json.error || `Couldn’t send (${res.status})`);
+  }
+  return json;
 }
 
 export function Contact() {
@@ -76,17 +71,16 @@ export function Contact() {
     setError("");
     setMailHref(mailtoHref(data));
     try {
-      await postFormSubmit(data);
+      await postQuote(data);
       setSent(true);
     } catch (err) {
-      const href = mailtoHref(data);
-      setMailHref(href);
-      try {
-        window.location.href = href;
-        setSent(true);
-      } catch {
-        setError(err instanceof Error ? err.message : "Couldn’t send. Email or call Eli.");
-      }
+      setMailHref(mailtoHref(data));
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Couldn’t send. Email or call Eli.",
+      );
+      // Do NOT mark success or auto-open mailto — honest failure only.
     } finally {
       setSending(false);
     }
@@ -105,11 +99,6 @@ export function Contact() {
               <p className="font-display text-2xl font-medium tracking-display">
                 Received. We’ll come back with a number, not a brochure.
               </p>
-              {mailHref ? (
-                <a href={mailHref} className="text-sm text-mist underline decoration-bone/25 underline-offset-4">
-                  If Mail didn’t open, tap here to send it.
-                </a>
-              ) : null}
             </div>
           ) : (
             <form onSubmit={onSubmit} className="mt-10 space-y-1">

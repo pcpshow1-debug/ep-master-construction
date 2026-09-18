@@ -1,64 +1,23 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { site } from "@/data/site";
-import { sendQuote } from "@/lib/send-quote";
 
 const PROJECTS = ["Deck", "Patio cover", "Framing", "Not sure yet"] as const;
 
 export function Contact() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
+  const [nextUrl, setNextUrl] = useState("https://epmasterconstruction.com/?sent=1#contact");
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
-    setSending(true);
-    setError("");
-    try {
-      await sendQuote({
-        data: {
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          city: data.city,
-          project: data.project,
-          notes: data.notes,
-        },
-      });
-      setSent(true);
-    } catch {
-      try {
-        const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            _subject: `Quote request — ${data.name} — ${data.project || "project"}`,
-            _template: "table",
-            _captcha: "false",
-            name: data.name,
-            email: data.email,
-            phone: data.phone || "",
-            city: data.city || "",
-            project: data.project || "",
-            notes: data.notes || "",
-          }),
-        });
-        const json = (await res.json().catch(() => ({}))) as { success?: boolean | string };
-        if (!res.ok || json.success === false || json.success === "false") {
-          throw new Error("send failed");
-        }
-        setSent(true);
-      } catch {
-        setError("Couldn’t send. Call or text instead — we’ll pick up.");
-      }
-    } finally {
-      setSending(false);
-    }
-  }
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("sent") === "1") setSent(true);
+    url.searchParams.set("sent", "1");
+    url.hash = "contact";
+    setNextUrl(url.toString());
+  }, []);
 
   return (
     <section id="contact" className="relative bg-ink text-bone">
@@ -73,7 +32,18 @@ export function Contact() {
               Received. We’ll come back with a number, not a brochure.
             </p>
           ) : (
-            <form onSubmit={onSubmit} className="mt-10 space-y-1">
+            <form
+              action={`https://formsubmit.co/${site.email}`}
+              method="POST"
+              className="mt-10 space-y-1"
+              onSubmit={() => setSending(true)}
+            >
+              <input type="hidden" name="_subject" value="New quote — EP Master Construction" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_next" value={nextUrl} />
+              <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+
               <input required name="name" className="field" placeholder="Name" autoComplete="name" />
               <input
                 required
@@ -85,20 +55,22 @@ export function Contact() {
               />
               <input type="tel" name="phone" className="field" placeholder="Phone" autoComplete="tel" />
               <input name="city" className="field" placeholder="City — Oregon or Washington" />
-              <select name="project" className="field appearance-none bg-ink" defaultValue="Deck">
-                {PROJECTS.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
+              <label className="block">
+                <span className="sr-only">Project</span>
+                <select name="project" className="field field-select bg-ink" defaultValue="Deck">
+                  {PROJECTS.map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <textarea
                 name="notes"
                 rows={4}
                 className="field resize-none"
                 placeholder="What are we building?"
               />
-              {error ? <p className="pt-4 text-sm text-mist">{error}</p> : null}
               <button type="submit" className="quote-btn mt-8" disabled={sending}>
                 {sending ? "Sending…" : "Send"}
                 <ArrowRight className="size-4" strokeWidth={2} />

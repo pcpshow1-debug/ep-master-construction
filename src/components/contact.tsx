@@ -2,25 +2,62 @@
 
 import { useState, type FormEvent } from "react";
 import { ArrowRight } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 import { site } from "@/data/site";
+import { sendQuote } from "@/lib/send-quote";
 
 const PROJECTS = ["Deck", "Patio cover", "Framing", "Not sure yet"] as const;
 
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function submitForm(form: HTMLFormElement) {
-    const data = Object.fromEntries(new FormData(form).entries());
-    const leads = JSON.parse(localStorage.getItem("epmaster-leads") ?? "[]") as unknown[];
-    leads.push({ ...data, at: new Date().toISOString() });
-    localStorage.setItem("epmaster-leads", JSON.stringify(leads));
-    setSent(true);
-  }
-
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    submitForm(event.currentTarget);
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    setSending(true);
+    setError("");
+    try {
+      await sendQuote({
+        data: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          city: data.city,
+          project: data.project,
+          notes: data.notes,
+        },
+      });
+      setSent(true);
+    } catch {
+      try {
+        const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(site.email)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: `Quote request — ${data.name} — ${data.project || "project"}`,
+            _template: "table",
+            _captcha: "false",
+            name: data.name,
+            email: data.email,
+            phone: data.phone || "",
+            city: data.city || "",
+            project: data.project || "",
+            notes: data.notes || "",
+          }),
+        });
+        const json = (await res.json().catch(() => ({}))) as { success?: boolean | string };
+        if (!res.ok || json.success === false || json.success === "false") {
+          throw new Error("send failed");
+        }
+        setSent(true);
+      } catch {
+        setError("Couldn’t send. Call or text instead — we’ll pick up.");
+      }
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -61,8 +98,9 @@ export function Contact() {
                 className="field resize-none"
                 placeholder="What are we building?"
               />
-              <button type="submit" className="quote-btn mt-8">
-                Send
+              {error ? <p className="pt-4 text-sm text-mist">{error}</p> : null}
+              <button type="submit" className="quote-btn mt-8" disabled={sending}>
+                {sending ? "Sending…" : "Send"}
                 <ArrowRight className="size-4" strokeWidth={2} />
               </button>
             </form>
@@ -97,8 +135,6 @@ export function Contact() {
                 {site.email}
               </a>
               <p className="mt-6 text-sm leading-relaxed text-mist">
-                {site.address}
-                <br />
                 {site.region}. {site.radius}.
               </p>
             </div>
@@ -108,13 +144,13 @@ export function Contact() {
                 <br />
                 WA #{site.waLicense}
               </p>
-              <Link
-                to="/estimator"
+              <a
+                href={site.estimatorUrl}
                 className="mt-5 inline-flex items-center gap-2 text-label uppercase tracking-label text-bone"
               >
                 Open the deck estimator
                 <ArrowRight className="size-3.5" strokeWidth={1.75} />
-              </Link>
+              </a>
             </div>
           </div>
         </div>

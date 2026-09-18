@@ -22,7 +22,6 @@ export function SiteFooter() {
           <a href={`mailto:${site.email}`} className="mt-2 block text-sm text-mist">
             {site.email}
           </a>
-          <p className="mt-3 text-sm leading-relaxed text-mist">{site.address}</p>
         </div>
         <div>
           <p className="text-label uppercase tracking-label text-fog">Follow</p>

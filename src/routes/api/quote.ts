@@ -83,7 +83,7 @@ export const Route = createFileRoute("/api/quote")({
             .filter(Boolean);
           const from =
             (process.env.NOTIFY_FROM_EMAIL || "").trim() ||
-            "EP Master Quotes <onboarding@resend.dev>";
+            "EP Master Quotes <info@rhinolab.app>";
           const subject = test
             ? `[TEST] Quote request — ${data.name} — ${data.project}`
             : `Quote request — ${data.name} — ${data.project}`;

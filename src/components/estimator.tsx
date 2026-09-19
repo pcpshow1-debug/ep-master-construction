@@ -24,10 +24,10 @@ export function Estimator() {
       >
         <source src="/video/estimator-h.mp4?v=7" type="video/mp4" />
       </video>
-      <div className="hero-veil" />
+      <div className="est-veil" />
 
-      <div className="relative z-10 flex h-full flex-col items-end justify-end px-5 pane-pad-hero pb-28 sm:px-6 md:px-10 lg:justify-center lg:px-12 lg:pb-0 xl:px-16">
-        <div className="max-w-[18rem] text-right sm:max-w-[26rem] lg:max-w-[36rem]">
+      <div className="est-copy relative z-10 flex h-full flex-col px-5 pane-pad-hero sm:px-6 md:px-10 lg:px-12 xl:px-16">
+        <div className="est-copy-inner">
           <p className="text-[0.82rem] font-medium uppercase tracking-label text-bone sm:text-[0.9rem]">
             Deck estimator
           </p>

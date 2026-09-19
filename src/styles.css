@@ -78,7 +78,7 @@
 @layer components {
   :root {
     --header-h: 4.35rem;
-    --dock-h: 4.15rem;
+    --dock-h: 0px;
   }
 
   @media (min-width: 768px) {
@@ -153,8 +153,79 @@
 
   .est-v {
     display: block;
-    bottom: var(--dock-h);
+    bottom: 0;
     height: auto;
+  }
+
+  .est-veil {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        270deg,
+        color-mix(in oklab, var(--color-ink) 48%, transparent) 0%,
+        color-mix(in oklab, var(--color-ink) 12%, transparent) 38%,
+        transparent 62%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--color-ink) 28%, transparent) 0%,
+        transparent 22%
+      );
+  }
+
+  .est-copy {
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 5.25rem;
+  }
+
+  .est-copy-inner {
+    max-width: 18rem;
+    text-align: right;
+  }
+
+  @media (orientation: landscape), (min-width: 1024px) {
+    .est-veil {
+      background:
+        linear-gradient(
+          90deg,
+          color-mix(in oklab, var(--color-ink) 46%, transparent) 0%,
+          color-mix(in oklab, var(--color-ink) 14%, transparent) 36%,
+          transparent 58%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in oklab, var(--color-ink) 28%, transparent) 0%,
+          transparent 22%
+        );
+    }
+
+    .est-copy {
+      align-items: flex-start;
+      justify-content: center;
+      padding-bottom: 0;
+    }
+
+    .est-copy-inner {
+      max-width: min(36rem, 46vw);
+      text-align: left;
+    }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .est-copy {
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding-top: 3.5rem;
+      padding-bottom: 0.9rem;
+    }
+
+    .est-copy-inner {
+      max-width: min(28rem, 48vw);
+      text-align: left;
+    }
   }
 
   @media (orientation: landscape) {
@@ -401,7 +472,7 @@
   }
 
   .mobile-dock {
-    display: block;
+    display: none;
   }
 
   @media (min-width: 1024px) {

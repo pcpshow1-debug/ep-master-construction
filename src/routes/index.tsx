@@ -4,7 +4,6 @@ import { Blog } from "@/components/blog";
 import { Contact } from "@/components/contact";
 import { Estimator } from "@/components/estimator";
 import { Hero } from "@/components/hero";
-import { MobileDock } from "@/components/mobile-dock";
 import { Reviews } from "@/components/reviews";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -29,7 +28,6 @@ function Home() {
         <Contact />
       </main>
       <SiteFooter />
-      <MobileDock />
     </>
   );
 }

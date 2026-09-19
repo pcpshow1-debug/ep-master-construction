@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { MobileDock } from "@/components/mobile-dock";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { blog, site } from "@/data/site";
@@ -73,7 +72,6 @@ function BlogPage() {
         </article>
       </main>
       <SiteFooter />
-      <MobileDock />
     </>
   );
 }

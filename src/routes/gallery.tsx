@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { GalleryGrid } from "@/components/gallery";
-import { MobileDock } from "@/components/mobile-dock";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { workCats } from "@/data/site";
@@ -83,7 +82,6 @@ function GalleryPage() {
         )}
       </main>
       <SiteFooter />
-      <MobileDock />
     </>
   );
 }

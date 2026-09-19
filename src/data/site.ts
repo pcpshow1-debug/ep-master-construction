@@ -92,8 +92,8 @@ export const work = [
     title: "Custom decks",
     kicker: "Outdoor rooms that last",
     copy: "Outdoor spaces designed around your home and how you plan to use them. We also remodel and resurface existing decks — new decking, railings, and the structural work that has to be right first.",
-    image: "/gallery/decks/IMG_5305.jpg",
-    alt: "Gray composite deck with black cable railing, lattice skirting, and step lights",
+    image: "/gallery/decks/IMG_5455.jpg",
+    alt: "Multi-level custom deck with glass railing, finished job",
   },
   {
     id: "covers",
@@ -131,7 +131,7 @@ export const gallery = [
 ];
 
 export const workCats = [
-  { id: "decks" as const, title: "Decks", kicker: "Outdoor rooms that last", image: "/gallery/decks/IMG_5305.jpg" },
+  { id: "decks" as const, title: "Decks", kicker: "Outdoor rooms that last", image: "/gallery/decks/IMG_5455.jpg" },
   { id: "covers" as const, title: "Patio covers", kicker: "Weather, made usable", image: "/gallery/covers/IMG_5477.jpg" },
   { id: "framing" as const, title: "Framing", kicker: "The bones first", image: "/gallery/framing/IMG_5486.jpg" },
 ];

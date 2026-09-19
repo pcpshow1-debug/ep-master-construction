@@ -10,9 +10,9 @@ export function Estimator() {
         muted
         loop
         playsInline
-        poster="/images/estimator-poster-v.jpg?v=7"
+        poster="/images/estimator-poster-v.jpg?v=8"
       >
-        <source src="/video/estimator-v.mp4?v=7" type="video/mp4" />
+        <source src="/video/estimator-v.mp4?v=8" type="video/mp4" />
       </video>
       <video
         className="estimator-media est-h"
@@ -26,19 +26,18 @@ export function Estimator() {
       </video>
       <div className="hero-veil" />
 
-      <div className="relative z-10 flex h-full flex-col justify-end px-5 pane-pad-hero pb-28 sm:px-6 md:px-10 lg:justify-center lg:px-12 lg:pb-0 xl:px-16">
-        <div className="max-w-[26rem] sm:max-w-[34rem] lg:max-w-[42rem]">
+      <div className="relative z-10 flex h-full flex-col items-end justify-end px-5 pane-pad-hero pb-28 sm:px-6 md:px-10 lg:justify-center lg:px-12 lg:pb-0 xl:px-16">
+        <div className="max-w-[18rem] text-right sm:max-w-[26rem] lg:max-w-[36rem]">
           <p className="text-[0.82rem] font-medium uppercase tracking-label text-bone sm:text-[0.9rem]">
-            Decks · Pergolas · Outdoor living
+            Deck estimator
           </p>
           <h2 className="hero-title mt-3 font-display font-medium leading-[0.9] tracking-display text-bone [text-shadow:0_2px_24px_rgba(0,0,0,0.55)]">
-            Build your deck.
+            Build your deck
+            <br />
+            and get estimate
           </h2>
-          <a
-            href={site.estimatorUrl}
-            className="quote-btn mt-7 inline-flex"
-          >
-            Start estimator
+          <a href={site.estimatorUrl} className="quote-btn mt-7 inline-flex">
+            Start
             <ArrowRight className="size-4" strokeWidth={2} />
           </a>
         </div>

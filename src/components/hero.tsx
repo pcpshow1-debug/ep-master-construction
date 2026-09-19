@@ -17,9 +17,9 @@ export function Hero() {
         muted
         loop
         playsInline
-        poster="/images/hero-cabin-v.jpg"
+        poster="/images/hero-porch-v.jpg"
       >
-        <source src="/video/hero-cabin-v.mp4" type="video/mp4" />
+        <source src="/video/hero-porch-v.mp4" type="video/mp4" />
       </video>
       <video
         className="hero-media hero-h absolute inset-0 h-full w-full"
@@ -27,9 +27,9 @@ export function Hero() {
         muted
         loop
         playsInline
-        poster="/images/hero-cabin-h.jpg"
+        poster="/images/hero-porch-h.jpg"
       >
-        <source src="/video/hero-cabin-h.mp4" type="video/mp4" />
+        <source src="/video/hero-porch-h.mp4" type="video/mp4" />
       </video>
       <div className="hero-veil" />
 

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { About } from "@/components/about";
+import { Blog } from "@/components/blog";
 import { Contact } from "@/components/contact";
 import { Estimator } from "@/components/estimator";
 import { Hero } from "@/components/hero";
@@ -23,6 +24,7 @@ function Home() {
         <Work />
         <Reviews />
         <Estimator />
+        <Blog />
         <About />
         <Contact />
       </main>

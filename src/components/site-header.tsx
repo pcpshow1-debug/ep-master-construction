@@ -27,7 +27,7 @@ export function SiteHeader() {
       setActive(pathname.replace("/", "") || "home");
       return;
     }
-    const nodes = ["home", "work", "reviews", "estimate", "about", "contact"]
+    const nodes = ["home", "work", "reviews", "estimate", "blog", "about", "contact"]
       .map((id) => document.getElementById(id))
       .filter((n): n is HTMLElement => Boolean(n));
     if (nodes.length === 0) return;

@@ -27,10 +27,40 @@ export const nav = [
   { href: "/#work", id: "work", label: "Work" },
   { href: "/#reviews", id: "reviews", label: "Reviews" },
   { href: "/#estimate", id: "estimate", label: "Estimator" },
+  { href: "/#blog", id: "blog", label: "Blog" },
   { href: "/gallery", id: "gallery", label: "Gallery" },
   { href: "/#about", id: "about", label: "About" },
   { href: "/#contact", id: "contact", label: "Contact" },
 ] as const;
+
+export const blog = {
+  kicker: "From the shop",
+  title: "Repair or Rebuild Your Deck?",
+  lede: "A few things to consider before starting your next outdoor project",
+  intro:
+    "If your deck has worn boards, a loose railing, or just feels outdated, you may not need to start from scratch. Sometimes a few upgrades are enough. Other times, rebuilding makes more sense.",
+  sections: [
+    {
+      title: "Should I repair or replace my deck?",
+      body: "Start with the structure. If the framing, posts, and connections are still solid, replacing the decking or railing may be enough. If there’s rot or structural damage underneath, a rebuild is usually the better option.",
+    },
+    {
+      title: "Is composite decking worth it?",
+      body: "Composite is a great choice if you want less maintenance. You won’t need to stain or seal it regularly, although it still needs occasional cleaning. Natural cedar looks beautiful, but requires more upkeep.",
+    },
+    {
+      title: "How much does a deck or patio cover cost?",
+      body: "It depends on the size, materials, height, stairs, and overall design. A simple ground-level deck will cost much less than an elevated deck or a custom patio cover.",
+    },
+    {
+      title: "Not sure where to start?",
+      body: "Try our Deck & Patio Cover Estimator to get a quick idea of pricing and explore different options for your backyard.",
+    },
+  ],
+  closer:
+    "EP Master Construction has been building decks and patio covers throughout Portland, Vancouver, and surrounding areas since 2018.",
+  cta: "Explore the estimator, then contact us when you’re ready for a detailed quote.",
+};
 
 export const about = [
   "Eli’s passion for building began as a child, when he dreamed of becoming a builder. In 2016, after leaving high school, he began working alongside his father at a local millwork and cabinet shop. With more than 35 years of experience, his father modeled the precision, craftsmanship, and attention to detail that would later help shape EP Master Construction.",

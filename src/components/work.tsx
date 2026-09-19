@@ -22,8 +22,12 @@ export function Work() {
               data-slide
               className="relative h-full w-full shrink-0 snap-start overflow-hidden border border-bone/15"
             >
-              <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+              <img
+                src={item.image}
+                alt={item.title}
+                className="absolute inset-0 h-full w-full object-cover object-[center_58%]"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,7,7,0.62)_0%,rgba(7,7,7,0.18)_26%,transparent_46%,rgba(7,7,7,0.78)_100%)]" />
               <div className="absolute bottom-6 left-6 right-16 sm:bottom-8 sm:left-8">
                 <p className="text-label uppercase tracking-label text-bone/70">{item.kicker}</p>
                 <p className="mt-1 font-display text-4xl font-medium tracking-display sm:text-5xl">{item.title}</p>

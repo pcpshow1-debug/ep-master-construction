@@ -35,6 +35,7 @@ export function GalleryGrid({ cat }: { cat?: Cat }) {
               alt={item.alt}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(7,7,7,0.42)_0%,transparent_28%)]" />
             <div className="pointer-events-none absolute inset-3 border border-transparent transition-colors duration-500 group-hover:border-bone/35" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent px-4 py-4">
               <p className="text-label uppercase tracking-label text-bone">{item.label}</p>

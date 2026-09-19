@@ -74,8 +74,8 @@ function GalleryPage() {
                 search={{ cat: item.id }}
                 className="relative min-h-[42vh] overflow-hidden border-b border-bone/10 md:border-r"
               >
-                <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-ink/35" />
+                <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover object-[center_58%]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,7,7,0.5)_0%,rgba(7,7,7,0.12)_30%,transparent_50%,rgba(7,7,7,0.55)_100%)]" />
                 <p className="absolute bottom-6 left-6 font-display text-3xl tracking-display">{item.title}</p>
               </Link>
             ))}

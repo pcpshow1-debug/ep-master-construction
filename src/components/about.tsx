@@ -31,7 +31,7 @@ function Fold({
 export function About() {
   return (
     <section id="about" className="relative bg-ink text-bone">
-      <div className="relative h-[min(52vh,26rem)] overflow-hidden">
+      <div className="relative h-[min(88svh,46rem)] overflow-hidden">
         <img
           src="/images/eli-portrait.jpg"
           alt="Eli, owner of EP Master Construction"

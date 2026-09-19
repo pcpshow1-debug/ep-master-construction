@@ -172,6 +172,10 @@ export function SiteHeader() {
                 <Link key={item.id} to="/gallery" className={className}>
                   {inner}
                 </Link>
+              ) : item.id === "blog" ? (
+                <Link key={item.id} to="/" hash="blog" className={className}>
+                  {inner}
+                </Link>
               ) : (
                 <a key={item.id} href={item.href} className={className}>
                   {inner}

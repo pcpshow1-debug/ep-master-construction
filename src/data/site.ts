@@ -19,7 +19,7 @@ export const site = {
   hours: "Mon–Fri 9:00–5:00",
   ccb: "219593",
   waLicense: "EPMASMC746K9",
-  estimatorUrl: "https://deck-estimator-client.vercel.app",
+  estimatorUrl: "https://app.epmasterconstruction.com",
   mapsUrl: "https://maps.app.goo.gl/PZkWkvmjfv4JuHZk6",
 };
 

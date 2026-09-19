@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as EstimatorRouteImport } from './routes/estimator'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ApiQuoteRouteImport } from './routes/api/quote'
@@ -17,6 +18,11 @@ import { Route as ApiQuoteRouteImport } from './routes/api/quote'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EstimatorRoute = EstimatorRouteImport.update({
@@ -37,12 +43,14 @@ const ApiQuoteRoute = ApiQuoteRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/estimator': typeof EstimatorRoute
   '/gallery': typeof GalleryRoute
   '/api/quote': typeof ApiQuoteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/estimator': typeof EstimatorRoute
   '/gallery': typeof GalleryRoute
   '/api/quote': typeof ApiQuoteRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/estimator': typeof EstimatorRoute
   '/gallery': typeof GalleryRoute
   '/api/quote': typeof ApiQuoteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/estimator' | '/gallery' | '/api/quote'
+  fullPaths: '/' | '/blog' | '/estimator' | '/gallery' | '/api/quote'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/estimator' | '/gallery' | '/api/quote'
-  id: '__root__' | '/' | '/estimator' | '/gallery' | '/api/quote'
+  to: '/' | '/blog' | '/estimator' | '/gallery' | '/api/quote'
+  id: '__root__' | '/' | '/blog' | '/estimator' | '/gallery' | '/api/quote'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogRoute: typeof BlogRoute
   EstimatorRoute: typeof EstimatorRoute
   GalleryRoute: typeof GalleryRoute
   ApiQuoteRoute: typeof ApiQuoteRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/estimator': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogRoute: BlogRoute,
   EstimatorRoute: EstimatorRoute,
   GalleryRoute: GalleryRoute,
   ApiQuoteRoute: ApiQuoteRoute,
